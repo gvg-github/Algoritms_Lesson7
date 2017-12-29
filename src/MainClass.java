@@ -112,28 +112,35 @@ public class MainClass {
 
     }
 
+    //Обход графа в глубину рекурсией.
     private static void dfs(MyVertex[] vertexList, int[][] matrix, int x, int size) {
 
         MyStack s = new MyStack(size);
         vertexList[x].setVisited(true);
         s.push(x);
-        int i = 0;
         System.out.println(vertexList[x].getLabel());
 
-        while (!s.isEmpty()) {
+        dfs_rec(s, vertexList, matrix, size);
+
+        for (int j = 0; j < size; j++) vertexList[j].setVisited(false);
+    }
+
+    //Обход графа в глубину рекурсией.
+    private static void dfs_rec(MyStack s, MyVertex[] vertexList, int[][] matrix, int size) {
+        if (!s.isEmpty()) {
             int current = s.peek();
             int vertex = getNext(current, size, vertexList, matrix);
-            if (vertex == -1)
+            if (vertex == -1) {
                 s.pop();
-            else {
+                dfs_rec(s, vertexList, matrix, size);
+            } else {
                 vertexList[vertex].setVisited(true);
                 System.out.println(vertexList[vertex].getLabel());
 
                 s.push(vertex);
+                dfs_rec(s, vertexList, matrix, size);
             }
         }
-
-        for (int j = 0; j < size; j++) vertexList[j].setVisited(false);
     }
 
     //Обход графа в ширину.
